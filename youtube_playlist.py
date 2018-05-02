@@ -3,9 +3,12 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from tqdm import tqdm
+import requests
+import json
+import api_key
 
 
-playlist_link = "https://www.youtube.com/playlist?list=PLBILG-T6e7eBKFRUCC05ErhBfJ3gPVBkB"
+playlist_link = "https://www.youtube.com/playlist?list=PLBILG-T6e7eDeszgpd2qZTAcRIHEvn4ES"
 browser = webdriver.Chrome()
 browser.get(playlist_link)
 browser.implicitly_wait(3)
@@ -31,16 +34,39 @@ for _ in tqdm(range(int(num_of_videos))):
         titles.append(title)
         sleep(5)
     
-print(titles)
 
-# search_field = browser.find_element_by_id('search')
-# search_field.send_keys('Kim Larsen playlist')
-# search_field.submit()
-# sleep(3)
+titles_to_URL = []
+for title in titles:
+    title_split = title.split()
+    title_url = ""
+    for idx, word in enumerate(title_split):
+        if(idx != len(title_split)-1) :
+            title_url += word + "%20"
+        else :
+            title_url += word
+    titles_to_URL.append(title_url)     
+    print(titles_to_URL)
 
-#page_source = browser.page_source
-#print(page_source)
 
+ids = []
 
-#class="yt-simple-endpoint style-scope ytd-playlist-renderer"
-#    href="/watch?v=prgsiq1Z8wM&list=PL4xuvJvndzN5tg4adjUv6ORp2Rszd9L1K"
+for url_title in titles_to_URL:
+    url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
+    query = {"Accept": "application/json",
+            "Content-Type": "application/json",
+            f"Authorization": "Bearer {api_key.SPOTIFY_KEY}"}
+
+    r = requests.get(url, headers=query)
+    results = r.json()
+    print(results)
+    ids.append(results["tracks"]["items"][0]["id"])
+
+# for id in ids:
+#     url = f"https://api.spotify.com/v1/tracks/{id}"
+#     query = {"Accept": "application/json",
+#             "Content-Type": "application/json",
+#             "Authorization": "Bearer "}
+
+#     r = requests.get(url, headers=query)
+#     results = r.json()
+#     print(results)
