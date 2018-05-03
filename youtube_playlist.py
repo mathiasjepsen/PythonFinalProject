@@ -40,18 +40,8 @@ for title in titles:
     title_split = title.split()
     title_url = ""
     for idx, word in enumerate(title_split):
-<<<<<<< HEAD
-        if(idx != len(title_split)-1) :
-            title_url += word + "%20" ##
-=======
-        if(idx != len(title_split) - 1) :
-            title_url += word + "%20"
->>>>>>> 7a770db905be107eee1263ea050bf5264f01c349
-        else :
-            title_url += word
-    titles_to_URL.append(title_url)     
-    print(titles_to_URL)
-
+        titles_to_URL.append(title_url)     
+        print(titles_to_URL)
 
 ids = []
 
