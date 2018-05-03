@@ -13,7 +13,6 @@ browser = webdriver.Chrome() ##
 browser.get(playlist_link) 
 browser.implicitly_wait(3) ##
 
-
 stats = browser.find_element_by_id("stats")
 num_of_videos = stats.text.split()[0]
 play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
@@ -48,7 +47,6 @@ for title in titles:
             title_url += word
     titles_to_URL.append(title_url)     
     print(titles_to_URL)
-
 
 ids = []
 for url_title in titles_to_URL:
