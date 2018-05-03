@@ -9,9 +9,9 @@ import api_key
 
 
 playlist_link = "https://www.youtube.com/playlist?list=PLBILG-T6e7eDeszgpd2qZTAcRIHEvn4ES"
-browser = webdriver.Chrome()
-browser.get(playlist_link)
-browser.implicitly_wait(3)
+browser = webdriver.Chrome() ##
+browser.get(playlist_link) 
+browser.implicitly_wait(3) ##
 
 
 stats = browser.find_element_by_id("stats")
@@ -19,7 +19,7 @@ num_of_videos = stats.text.split()[0]
 play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
 play_all_button.click()
 sleep(2)
-mute_button = browser.find_element_by_xpath('//*[@class="ytp-mute-button ytp-button"]')
+mute_button = browser.find_element_by_xpath('//*[@class="ytp-mute-button ytp-button"]') ##
 mute_button.click()
 sleep(2)
 
@@ -53,11 +53,11 @@ for title in titles:
 ids = []
 for url_title in titles_to_URL:
     url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
-    query = {"Accept": "application/json",
+    headers = {"Accept": "application/json",
             "Content-Type": "application/json",
             f"Authorization": "Bearer {api_key.SPOTIFY_KEY}"}
 
-    r = requests.get(url, headers=query)
+    r = requests.get(url, headers=headers)
     results = r.json()
     print(results)
     ids.append(results["tracks"]["items"][0]["id"])
