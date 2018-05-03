@@ -24,6 +24,7 @@ mute_button = browser.find_element_by_xpath(
 mute_button.click()
 sleep(2)
 
+
 titles = []
 for _ in tqdm(range(int(num_of_videos))):
     if not browser.find_elements_by_xpath('//*[@class="reason style-scope ytd-player-error-message-renderer"]'):
@@ -45,20 +46,20 @@ for title in titles:
     title_split = title.split()
     title_url = ""
     for idx, word in enumerate(title_split):
-        if(idx != len(title_split) - 1):
+        if(idx != len(title_split) - 1) :
             title_url += word + "%20"
-        else:
+        else :
             title_url += word
-    titles_to_URL.append(title_url)
+    titles_to_URL.append(title_url)     
     print(titles_to_URL)
 
-uris = []
 
+uris = []
 for url_title in titles_to_URL:
     url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
     headers = {"Accept": "application/json",
-               "Content-Type": "application/json",
-               "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
 
     r = requests.get(url, headers=headers)
     results = r.json()
@@ -78,7 +79,3 @@ spotify_api_calls.add_to_playlist(uris)
 #     r = requests.get(url, headers=query)
 #     results = r.json()
 #     print(results)
-#
-# Adding comment for test
-#
-# Happy now?
