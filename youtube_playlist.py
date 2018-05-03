@@ -40,7 +40,7 @@ for title in titles:
     title_split = title.split()
     title_url = ""
     for idx, word in enumerate(title_split):
-        if(idx != len(title_split)-1) :
+        if(idx != len(title_split) - 1) :
             title_url += word + "%20"
         else :
             title_url += word
@@ -70,3 +70,5 @@ for url_title in titles_to_URL:
 #     r = requests.get(url, headers=query)
 #     results = r.json()
 #     print(results)
+# 
+# Adding comment for test
