@@ -1,0 +1,38 @@
+DOCUMENTATION ABOUT UNCLEAR PARTS OF THE CODE
+
+
+
+browser = webdriver.Chrome()
+
+- webdriver import from selenium module
+- used for UI automation
+
+
+browser.implicitly_wait(3)
+
+- an implicitly_wait() tells WebDriver to poll the DOM for a certain amount of time when trying to find any element
+
+play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
+
+- find_element_by_xpath is a method which allows us to navigate through elements and attributes in an XML document. 
+- typically used when you don't have suitable id or name attribute for the element you wish to locate
+- // in the xpath stand for selecting the current node whereas * stands for any tagname
+
+sleep()
+
+- sleep() sets the condition to an exact time period to wait for next the part of the code to execute
+
+title_url += word + "%20"
+
+- %20 is encoding refference which stands for space between words.
+
+f'string'
+
+- works like a .format() method, however you can directly insert the names from the current scope in the format string
+
+
+
+
+
+
+
