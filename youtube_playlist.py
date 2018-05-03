@@ -48,12 +48,13 @@ for title in titles:
     titles_to_URL.append(title_url)     
     print(titles_to_URL)
 
+
 ids = []
 for url_title in titles_to_URL:
     url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
     headers = {"Accept": "application/json",
             "Content-Type": "application/json",
-            f"Authorization": "Bearer {api_key.SPOTIFY_KEY}"}
+            "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
 
     r = requests.get(url, headers=headers)
     results = r.json()
