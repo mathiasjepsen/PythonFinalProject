@@ -13,6 +13,7 @@ browser = webdriver.Chrome()
 browser.get(playlist_link)
 browser.implicitly_wait(3)
 
+
 stats = browser.find_element_by_id("stats")
 num_of_videos = stats.text.split()[0]
 play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
@@ -21,6 +22,7 @@ sleep(2)
 mute_button = browser.find_element_by_xpath('//*[@class="ytp-mute-button ytp-button"]')
 mute_button.click()
 sleep(2)
+
 
 titles = []
 for _ in tqdm(range(int(num_of_videos))):
@@ -49,7 +51,6 @@ for title in titles:
 
 
 ids = []
-
 for url_title in titles_to_URL:
     url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
     query = {"Accept": "application/json",
@@ -70,7 +71,3 @@ for url_title in titles_to_URL:
 #     r = requests.get(url, headers=query)
 #     results = r.json()
 #     print(results)
-# 
-# Adding comment for test
-#
-# Happy now?
