@@ -5,12 +5,14 @@ DOCUMENTATION ABOUT UNCLEAR PARTS OF THE CODE
 browser = webdriver.Chrome()
 
 - webdriver import from selenium module
-- used for UI automation
+- webdriver is a tool for automating web application testing, and in particular to verify that they work as expected
+- it makes direct calls to the browser using each chrome’s native support for automation.
+- in our example, we provided a playlist link which is then passed into browser.get() as a parameter. the webdriver automates UI of a link we have provided and allows us to interact with it and test if everything is in order.
 
 
 browser.implicitly_wait(3)
 
-- an implicitly_wait() tells WebDriver to poll the DOM for a certain amount of time when trying to find any element
+- implicitly wait method tells webdriver to wait for certain amount of time before throwing "No such element exception". In the above example we set the time frame of three seconds. If the webdriver doesn't find the element, it will throw an exception
 
 play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
 
@@ -21,6 +23,7 @@ play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-pla
 sleep()
 
 - sleep() sets the condition to an exact time period to wait for next the part of the code to execute
+- difference between wait() and sleep(): wait() method is used when we want to ensure that our browser will wait for a certain period of time before throwing an error or moving forward to looking for another element, whereas sleep() method is specifically used for setting a time period on a chunk of code and waiting for the next part of it to execute
 
 title_url += word + "%20"
 
