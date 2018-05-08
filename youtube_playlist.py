@@ -6,19 +6,21 @@ from tqdm import tqdm
 import requests
 import json
 import api_key
-
+import spotify_api_calls
 
 playlist_link = "https://www.youtube.com/playlist?list=PLBILG-T6e7eDeszgpd2qZTAcRIHEvn4ES"
-browser = webdriver.Chrome() ##
-browser.get(playlist_link) 
-browser.implicitly_wait(3) ##
+browser = webdriver.Chrome()
+browser.get(playlist_link)
+browser.implicitly_wait(3)
 
 stats = browser.find_element_by_id("stats")
 num_of_videos = stats.text.split()[0]
-play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
+play_all_button = browser.find_element_by_xpath(
+    '//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
 play_all_button.click()
 sleep(2)
-mute_button = browser.find_element_by_xpath('//*[@class="ytp-mute-button ytp-button"]') ##
+mute_button = browser.find_element_by_xpath(
+    '//*[@class="ytp-mute-button ytp-button"]')
 mute_button.click()
 sleep(2)
 
@@ -28,13 +30,16 @@ for _ in tqdm(range(int(num_of_videos))):
     if not browser.find_elements_by_xpath('//*[@class="reason style-scope ytd-player-error-message-renderer"]'):
         title = pytube.YouTube(browser.current_url).title
         titles.append(title)
-        next_button = browser.find_element_by_xpath('//*[@class="ytp-next-button ytp-button"]')
-        browser.execute_script("arguments[0].click();", next_button)
+        next_button = browser.find_element_by_xpath(
+            '//*[@class="ytp-next-button ytp-button"]')
+        #browser.execute_script("arguments[0].click();", next_button)
+        next_button.click()
     else:
-        title = browser.find_element_by_xpath('//*[@class="style-scope ytd-video-primary-info-renderer"]').text.splitlines()[0]
+        title = browser.find_element_by_xpath(
+            '//*[@class="style-scope ytd-video-primary-info-renderer"]').text.splitlines()[0]
         titles.append(title)
         sleep(5)
-    
+
 
 titles_to_URL = []
 for title in titles:
@@ -60,6 +65,10 @@ for url_title in titles_to_URL:
     results = r.json()
     print(results)
     uris.append(results["tracks"]["items"][0]["uri"])
+
+spotify_api_calls.create_playlist()
+spotify_api_calls.add_to_playlist(uris)
+
 
 # for id in ids:
 #     url = f"https://api.spotify.com/v1/tracks/{id}"
