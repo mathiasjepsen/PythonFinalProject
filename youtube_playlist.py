@@ -49,17 +49,17 @@ for title in titles:
     print(titles_to_URL)
 
 
-ids = []
+uris = []
 for url_title in titles_to_URL:
     url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
     headers = {"Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
+            f"Authorization": "Bearer {api_key.SPOTIFY_KEY}"}
 
     r = requests.get(url, headers=headers)
     results = r.json()
     print(results)
-    ids.append(results["tracks"]["items"][0]["id"])
+    uris.append(results["tracks"]["items"][0]["uri"])
 
 # for id in ids:
 #     url = f"https://api.spotify.com/v1/tracks/{id}"
