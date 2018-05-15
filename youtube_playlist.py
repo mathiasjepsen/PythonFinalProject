@@ -77,3 +77,11 @@ playlist_id = spotify_api.create_playlist("thom.thimothee",
                             "Boring description")
 
 spotify_api.add_to_playlist(uris, playlist_id)
+
+def myCoolFunk():
+    input_name = input("Hello Sir, may I ask for your username please:")
+    input_playlistname = input("Now I will ask you for the name you want to provide for the playlist:")
+    input_description = input("Description of the playlist:")
+    print("values you've entered:" + input_name + input_playlistname + input_description)
+    spotify_api.create_playlist(input_name, input_playlistname, input_description)
+
