@@ -33,6 +33,9 @@ f'string'
 
 - works like a .format() method, however you can directly insert the names from the current scope in the format string
 
+json.dumps()
+
+- serialize object(process of converting abstract datatype to stream of bytes, in this case we serialize to JSON str)to a JSON formatted str using this conversion table.
 
 
 
