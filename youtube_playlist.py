@@ -34,7 +34,7 @@ for _ in tqdm(range(int(num_of_videos))):
         titles.append(title)
         next_button = browser.find_element_by_xpath(
             '//*[@class="ytp-next-button ytp-button"]')
-        browser.execute_script("arguments[0].click();", next_button)
+        browser.execute_script("arguments[0].click();", next_button) 
         #next_button.click()
     else:
         title = browser.find_element_by_xpath(
@@ -65,15 +65,15 @@ for url_title in titles_to_URL:
 
     headers = {"Accept": "application/json",
                "Content-Type": "application/json",
-               f"Authorization": "Bearer {api_key.SPOTIFY_TOKEN}"}
+               "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
 
     r = requests.get(url, headers=headers)
     results = r.json()
-    print(results)
-    uris.append(results["tracks"]["items"][0]["uri"])
+    uris.append(results["tracks"]["items"][0]["uri"]) #need to handle scenario where song not found on spotify
 
 
-spotify_api.create_playlist("serenitymusic97", 
+playlist_id = spotify_api.create_playlist("thom.thimothee", 
                             "Awesome Test Playlist", 
                             "Boring description")
-spotify_api.add_to_playlist(uris)
+
+spotify_api.add_to_playlist(uris, playlist_id)

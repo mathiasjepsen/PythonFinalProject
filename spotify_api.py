@@ -2,14 +2,14 @@ import requests
 import json
 import api_key
 
-global user_id
-global playlist_name
-global playlist_description
 
-def create_playlist(user_id, playlist_name, playlist_description):
-    user_id = user_id
-    playlist_name = playlist_name
-    playlist_description = playlist_description
+def create_playlist(user_ID, playlist_Name, playlist_Description):
+    global user_id 
+    global playlist_name
+    global playlist_description
+    user_id = user_ID
+    playlist_name = playlist_Name
+    playlist_description = playlist_Description
     url_create_playlist = f"https://api.spotify.com/v1/users/{user_id}/playlists"
     headers = {"Accept": "application/json",
                "Content-Type": "application/json",
@@ -18,10 +18,11 @@ def create_playlist(user_id, playlist_name, playlist_description):
         "name": playlist_name,
         "description": playlist_description
     }
-    r = requests.post(url_create_playlist, headers=headers, data=json.dumps(body))
+    r = requests.post(url_create_playlist, headers=headers, 
+                                           data=json.dumps(body))
     results = r.json()
-    print(results)
-    # playlist_id = 
+    return results["id"] 
+
 
 
 def add_to_playlist(uris, playlist_id):
@@ -32,8 +33,7 @@ def add_to_playlist(uris, playlist_id):
     body = {
         "uris": uris
     }
-    r = requests.post(url, headers=headers,
-                      data=json.dumps(body))
-    results = r.json()
-    print(results)
+    requests.post(url, headers=headers,
+                       data=json.dumps(body))
+
 
