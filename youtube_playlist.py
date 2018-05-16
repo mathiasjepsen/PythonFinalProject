@@ -8,6 +8,7 @@ import json
 import api_key
 import spotify_api
 
+
 playlist_link = "https://www.youtube.com/playlist?list=PLBILG-T6e7eDeszgpd2qZTAcRIHEvn4ES"
 browser = webdriver.Chrome()
 browser.get(playlist_link)
@@ -60,6 +61,7 @@ titles_to_URL = [title.replace(" ", "%20") for title in titles]
 
 
 uris = []
+unknown_songs = []
 for url_title in titles_to_URL:
     url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
 
@@ -69,13 +71,13 @@ for url_title in titles_to_URL:
 
     r = requests.get(url, headers=headers)
     results = r.json()
-    uris.append(results["tracks"]["items"][0]["uri"]) #need to handle scenario where song not found on spotify
+    try:
+        uris.append(results["tracks"]["items"][0]["uri"])
+    except KeyError:
+        unknown_songs.append(url_title.replace("%20", " "))
 
 
-playlist_id = spotify_api.create_playlist("serenitymusic97", 
-                            "Awesome Test Playlist", 
-                            "Boring description",
-                            api_key.SPOTIFY_TOKEN)
+playlist_id = spotify_api.create_playlist("113963150?si=EQvUSQwKQoqNb-5Q7sTuvA", "Awesome Test Playlist", "Test Description")
 
 spotify_api.add_to_playlist(uris, playlist_id)
 
