@@ -17,8 +17,10 @@ def create_playlist(id, playlist_name, playlist_description):
         "name": playlist_name,
         "description": playlist_description
     }
-    r = requests.post(url_create_playlist, headers=headers,
+    r = requests.post(url_create_playlist, 
+                      headers=headers,
                       data=json.dumps(body))
+    print(r)
     results = r.json()
     return results["id"]
 
