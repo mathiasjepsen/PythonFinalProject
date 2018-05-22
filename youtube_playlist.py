@@ -70,14 +70,10 @@ def find_spotify_songs(titles_as_URL):
 
 if __name__ == "__main__":
     print("Please enter the following information in order to continue:")
-    print("The link to the playlist: ")
-    playlist_link = input("> ")
-    print("Spotify username: ")
-    spotify_username = input("> ")
-    print("Playlist name: ")
-    playlist_name = input("> ")
-    print("Playlist description: ")
-    playlist_description = input("> ")
+    playlist_link = input("The link to the playlist: \n> ")
+    spotify_username = input("Spotify username: \n> ")
+    playlist_name = input("Playlist name: \n> ")
+    playlist_description = input("Playlist description: \n> ")
 
     init(playlist_link)
 
