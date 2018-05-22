@@ -10,26 +10,26 @@ import spotify_api
 import bs4
 
 
-playlist_link = "https://www.youtube.com/playlist?list=PLBILG-T6e7eBKFRUCC05ErhBfJ3gPVBkB"
-browser = webdriver.Chrome()
-browser.get(playlist_link)
+def init(playlist_link):
+    global num_of_videos
+    global browser
+    browser = webdriver.Chrome()
+    browser.get(playlist_link)
 
-stats = browser.find_element_by_id("stats")
-num_of_videos = stats.text.split()[0]
-play_all_button = browser.find_element_by_xpath(
-    '//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
-play_all_button.click()
-sleep(2)
-mute_button = browser.find_element_by_xpath(
-    '//*[@class="ytp-mute-button ytp-button"]')
-mute_button.click()
-sleep(2)
+    stats = browser.find_element_by_id("stats")
+    num_of_videos = stats.text.split()[0]
+    play_all_button = browser.find_element_by_xpath(
+        '//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
+    play_all_button.click()
+    sleep(2)
+    mute_button = browser.find_element_by_xpath(
+        '//*[@class="ytp-mute-button ytp-button"]')
+    mute_button.click()
 
 
-titles = []
-for _ in tqdm(range(int(num_of_videos))):
-    if browser.find_element_by_xpath('//*[@class="ytp-next-button ytp-button"]'):
-        print("DIDN'T FIND")
+def scrape_titles():
+    titles = []
+    for _ in tqdm(range(int(num_of_videos))):
         title = browser.find_element_by_xpath(
             '//*[@class="style-scope ytd-video-primary-info-renderer"]') \
             .text.splitlines()[0]        
@@ -38,55 +38,62 @@ for _ in tqdm(range(int(num_of_videos))):
             '//*[@class="ytp-next-button ytp-button"]')
         browser.execute_script("arguments[0].click();", next_button) 
         #next_button.click()
-        sleep(2)
-    else:
-        print("IN ELSE BLOCK")
-        title = browser.find_element_by_xpath(
-            '//*[@class="style-scope ytd-video-primary-info-renderer"]') \
-            .text.splitlines()[0]
-        titles.append(title)
-        sleep(5)
+        sleep(2) # If we can find a way to have this be more dynamic, 
+                 # and not hard-coded to 2, that'd be nice
+
+    return titles
+   
+
+def find_spotify_songs(titles_as_URL):
+    uris = []
+    unknown_songs = []
+    for url_title in titles_as_URL:
+        url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
+
+        headers = {"Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
+
+        r = requests.get(url, headers=headers)
+        results = r.json()
+
+        try:
+            uris.append(results["tracks"]["items"][0]["uri"])
+        except KeyError:
+            if results["error"]:
+                print(results["error"]["message"])
+        except IndexError:
+            unknown_songs.append(url_title.replace("%20", " "))
+
+    return (uris, unknown_songs)
 
 
-titles_to_URL = [title.replace(" ", "%20") for title in titles]
+if __name__ == "__main__":
+    print("Please enter the following information in order to continue:")
+    print("The link to the playlist: ")
+    playlist_link = input("> ")
+    print("Spotify username: ")
+    spotify_username = input("> ")
+    print("Playlist name: ")
+    playlist_name = input("> ")
+    print("Playlist description: ")
+    playlist_description = input("> ")
 
+    init(playlist_link)
 
-# titles_to_URL = []
-# for title in tqdm(titles):
-#     title_split = title.split()
-#     title_url = ""
-#     for idx, word in enumerate(title_split):
-#         if(idx != len(title_split) - 1) :
-#             title_url += word + "%20"
-#         else :
-#             title_url += word
-#     titles_to_URL.append(title_url)     
+    titles = scrape_titles()
+    titles_as_URL = [title.replace(" ", "%20") for title in titles]
 
+    uris, unknown_songs = find_spotify_songs(titles_as_URL)
 
-uris = []
-unknown_songs = []
-for url_title in titles_to_URL:
-    url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
+    playlist_id = spotify_api.create_playlist(spotify_username, 
+                                              playlist_name, 
+                                              playlist_description)
+    
+    spotify_api.add_to_playlist(uris, playlist_id)
 
-    headers = {"Accept": "application/json",
-               "Content-Type": "application/json",
-               "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
-
-    r = requests.get(url, headers=headers)
-    results = r.json()
-    try:
-        uris.append(results["tracks"]["items"][0]["uri"])
-    except KeyError:
-        unknown_songs.append(url_title.replace("%20", " "))
-    except IndexError:
-        print(url_title)
-        print(results)
-
-
-playlist_id = spotify_api.create_playlist("113963150", 
-                                          "Awesome Test Playlist", 
-                                          "Test Description")
-
-spotify_api.add_to_playlist(uris, playlist_id)
+    print("The following songs couldn't be added to the playlist: ")
+    for song in unknown_songs:
+        print(song)
 
 
