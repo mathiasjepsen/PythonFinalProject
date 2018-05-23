@@ -9,7 +9,11 @@ Clone or download this repository.
 
 **Please** Before trying to run our code, follow the below steps.
 
-### Step 1: imports
+### Browser
+
+The code uses google Chrome to "scrap" the youtube playlist, hence, you need to have downloaded Chrome.
+
+### imports
 The source code is in Python and requires several modules. Please make sure you have:
 
 selenium
@@ -24,7 +28,7 @@ spotify_api
 
 json
 
-### Step 2: Personal information
+### Personal information
 In order to access and modify your Spotify account we need you to provide a valid authentification token.
 
 1- Click the following link: [get token](https://beta.developer.spotify.com/console/post-playlists/) 
@@ -47,7 +51,7 @@ In order to access and modify your Spotify account we need you to provide a vali
 
 ### Running the Code
 
-Now (if you have successfully completed the two previous steps) the fun begins. In your command line navigate into the repository you just cloned or downloaded, and type "Python youtube_playlist.py"
+Now (if you have successfully completed the previous parts) the fun begins. In your command line navigate into the repository you just cloned or downloaded, and type "Python youtube_playlist.py"
 
 You will be asked to provide information:
 
