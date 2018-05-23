@@ -42,7 +42,6 @@ def request_song_info(song_title, artist_name):
 def scrap_song_url(url):
     page = requests.get(url)
     html = BeautifulSoup(page.text, 'html.parser')
-    [h.extract() for h in html('script')]
     lyrics = html.find('div', class_='lyrics').get_text()
 
     return lyrics
@@ -69,7 +68,7 @@ def read_from_console():
     print(lyrics)
     myDict = {
             "male": ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
-                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks", "nigga"],
+                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks"],
             "female": ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
                         "have", "kids", "he", "her", "children", "because", "so",
                         "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
