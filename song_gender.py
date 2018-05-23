@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from collections import Counter
 
 
-def search(q, typeSearch):
+def search(item_name, item_type):
     url = f"https://api.spotify.com/v1/search"
     headers = {
         "Accept": "application/json",
@@ -13,8 +13,8 @@ def search(q, typeSearch):
         "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"
     }
     params = {
-        "q": q,
-        "type": typeSearch
+        "q": item_name,
+        "type": item_type
     }
     r = requests.get(url, headers=headers,
                      params=params)
@@ -30,10 +30,10 @@ def search(q, typeSearch):
 
 
 def request_song_info(song_title, artist_name):
-    base_url = 'https://api.genius.com'
+    url = 'https://api.genius.com'
     headers = {'Authorization': 'Bearer ' +
-               'ccHDzjsPAnwWcOAo2fS5Kb5cH9BFLqsryi5r0a6p3flgb_B3g8qPguO68A3NZTZJ'}
-    search_url = base_url + '/search'
+               api_key.GENIUS_TOKEN}
+    search_url = url + '/search'
     data = {'q': song_title + ' ' + artist_name}
     response = requests.get(search_url, data=data, headers=headers)
     return response
@@ -48,7 +48,7 @@ def scrap_song_url(url):
     return lyrics
 
 
-def readFromConsole():
+def read_from_console():
     input_q = input("provide a name of an item you are searching for:")
     input_type = input("provide a category album/artist/playlist/track:")
     search(input_q, input_type)
@@ -90,4 +90,4 @@ def readFromConsole():
 
 
 if __name__ == "__main__":
-    readFromConsole()
+    read_from_console()
