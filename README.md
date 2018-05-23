@@ -1,22 +1,62 @@
-# PythonFinalProject
+# General
+This project provides a main and a side/bonus functionality.
+The main functionality is to enable a user to convert a youtube playlist into a Spotify playlist.
 
-### Ideas
-1. Convert a YouTube playlist to a Spotify playlist - webscraping and Selenium 
-2. AI Art with Style Transfer using Keras 
-       https://medium.com/mlreview/making-ai-art-with-style-transfer-using-keras-8bb5fa44b216
-3. A program to process and visualize information that facebook has collected about you. 
+We provide a second service, which enables user to find out if a song is more "male" or "female". We will detail the usage of this extra functionality at the end of this document: (link here)
 
-## Youtube -> Spotify Playlist Converter
-### Steps required
-1. Figure out which HTML element(s) on the page we need to scrape.
-2. Use Selenium to automate the process for us, which will require knowing which button to click to skip forward in the playlist.
-3. Figure out how we deal with potential ads on the page, and if it's even necessary. Maybe we don't even have to bother.
-4. Compile all the song titles into a list in Python, and then JSONify it.
-5. Read up on the Spotify API (https://beta.developer.spotify.com/documentation/web-api/) to learn how to use it properly.
-6. Use the Spotify API to make a POST request with the song titles, hopefully creating a new playlist :P
-## Specify if the song is given by a male or a female human speciment. 
-### Steps Required 
-1. Give the song name and artist. 
-2. Find the lyrics using genius api. 
-3. Compare the lyrics with the dictionary containing male/female words to find the "gender" 
-4. Save the song and its "gender" in a dictionary for optimization in case of a future search.
+## Youtube to Spotify playlist
+Clone or download this repository.
+
+**Please** Before trying to run our code, follow the below steps.
+
+### Step 1: imports
+The source code is in Python and requires several modules. Please make sure you have:
+
+selenium
+
+tqdm
+
+Requests
+
+bs4
+
+spotify_api
+
+json
+
+### Step 2: Personal information
+In order to access and modify your Spotify account we need you to provide a valid authentification token.
+
+1- Click the following link: [get token](https://beta.developer.spotify.com/console/post-playlists/) 
+
+2- Click on the "GET TOKEN" button
+
+3- Login with your Spotify account
+
+4- Tick the boxes "playlist-modify-public" and "playlist-modify-private"
+
+5- Click on "REQUEST TOKEN"
+
+6- Copy the entire content of the "OAuth Token" field (double click in it)
+
+7- Open the api_key.py file and paste the content in the SPOTIFY_TOKEN variable, within the "".
+
+8- Save the api_key.py file 
+
+**Note: The authentification Token is valid for approx. 15 minutes, so you might be asked to repeat this operation again if your token has expired**
+
+### Running the Code
+
+Now (if you have successfully completed the two previous steps) the fun begins. In your command line navigate into the repository you just cloned or downloaded, and type "Python youtube_playlist.py"
+
+You will be asked to provide information:
+
+1- You will be asked to provide the link to the youtube playlist: mind you need to provide link to the "playlist homepage": like the following [example](https://www.youtube.com/playlist?list=PLDzVECoc2lpTFnCQTzTK8RIRnuFW-fFbu)
+
+2- You will then be asked to provide your Spotify username, provide the username of the account you used to retrieve your authentification Token
+
+3- Provide the name of the playlist you wish to create on your Spotify account
+
+4- Provide the description of the playlist you want to create (optional) 
+
+You will see that a Browser page will open, do not touch it, it will be closed when we have retrieved all the necessary information.
