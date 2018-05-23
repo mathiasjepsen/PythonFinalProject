@@ -21,11 +21,11 @@ def search(item_name, item_type):
     data = r.json()
     tracks = data["tracks"]["items"]
     for track in tracks:
-        dict = {
+        track_info = {
             "song_title": track["name"],
             "artist_name": track["artists"][0]["name"]
         }
-        print(dict)
+        print(track_info)
 
 
 
