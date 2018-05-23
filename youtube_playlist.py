@@ -68,7 +68,7 @@ def find_spotify_songs(titles_as_URL):
     return (uris, unknown_songs)
 
 
-if __name__ == "__main__":
+def main():
     print("Please enter the following information in order to continue:")
     playlist_link = input("The link to the playlist: \n> ")
     spotify_username = input("Spotify username: \n> ")
@@ -92,4 +92,6 @@ if __name__ == "__main__":
     for song in unknown_songs:
         print(song)
 
+if __name__ == "__main__":
+    main()
 
