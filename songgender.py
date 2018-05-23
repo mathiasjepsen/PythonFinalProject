@@ -25,7 +25,7 @@ def search(q, typeSearch):
             "artist_name": track["artists"][0]["name"]
         }
         print(dict)
-    return dict
+
 
 
 def request_song_info(song_title, artist_name):
@@ -85,4 +85,5 @@ def readFromConsole():
         print("it's a draw bruh")
 
 
-readFromConsole()
+if __name__ == "__main__":
+    readFromConsole()
