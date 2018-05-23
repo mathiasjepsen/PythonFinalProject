@@ -166,4 +166,3 @@ def readFromConsole():
         print("contains more female shit")
 
 
-readFromConsole()
