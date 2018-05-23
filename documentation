@@ -55,6 +55,8 @@ for hit in json['response']['hits']:
 Due to the object shape we got from the request, we will have to iterate over the hits key in that object and look for an exact match using the artist_name variable.
 If we successfully have a match in that object, it means that the song we look for is available in the API and is now available in the remote_song_info variable.
 
-
+request_song_info()
+ 
+- This method receives the song and artist name we extracted from the user input and sends a request to the Genius API
 
 
