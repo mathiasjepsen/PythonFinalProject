@@ -81,11 +81,11 @@ def read_from_console():
                 key_list.append(key)
     print(Counter(key_list))
     if key_list.count("male") > key_list.count("female"):
-        print("it contains more male shit")
+        print("Seems like this song favours male specific words")
     elif key_list.count("female") > key_list.count("male"):
-        print("contains more female shit")
+        print("Seems like this songs favour female specific words")
     else:
-        print("it's a draw bruh")
+        print("Well well well, it's a draw")
 
 
 if __name__ == "__main__":
