@@ -25,7 +25,7 @@ def search(q, typeSearch):
             "artist_name": track["artists"][0]["name"]
         }
         print(dict)
-    return dict
+
 
 
 def request_song_info(song_title, artist_name):
@@ -67,8 +67,11 @@ def readFromConsole():
 
     print(lyrics)
     myDict = {
-            "male": ["fuck", "her", "she", "gun", "car", "lol"],
-            "female": ["him", "he", "skirt", "shop", "love"]
+            "male": ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
+                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks"],
+            "female": ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
+                        "have", "kids", "he", "her", "children", "because", "so",
+                        "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
         }
 
     key_list = []
@@ -79,10 +82,11 @@ def readFromConsole():
     print(key_list)
     if key_list.count("male") > key_list.count("female"):
         print("it contains more male shit")
-    if key_list.count("female") > key_list.count("male"):
+    elif key_list.count("female") > key_list.count("male"):
         print("contains more female shit")
     else:
         print("it's a draw bruh")
 
 
-readFromConsole()
+if __name__ == "__main__":
+    readFromConsole()
