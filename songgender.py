@@ -2,6 +2,7 @@ import requests
 import json
 import api_key
 from bs4 import BeautifulSoup
+from collections import Counter
 
 
 def search(q, typeSearch):
@@ -68,7 +69,7 @@ def readFromConsole():
     print(lyrics)
     myDict = {
             "male": ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
-                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks"],
+                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks", "nigga"],
             "female": ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
                         "have", "kids", "he", "her", "children", "because", "so",
                         "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
@@ -79,7 +80,7 @@ def readFromConsole():
         for value in myDict[key]:
             if value in lyrics:
                 key_list.append(key)
-    print(key_list)
+    print(Counter(key_list))
     if key_list.count("male") > key_list.count("female"):
         print("it contains more male shit")
     elif key_list.count("female") > key_list.count("male"):
