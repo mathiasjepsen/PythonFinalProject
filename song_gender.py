@@ -2,9 +2,10 @@ import requests
 import json
 import api_key
 from bs4 import BeautifulSoup
+from collections import Counter
 
 
-def search(q, typeSearch):
+def search(item_name, item_type):
     url = f"https://api.spotify.com/v1/search"
     headers = {
         "Accept": "application/json",
@@ -12,8 +13,8 @@ def search(q, typeSearch):
         "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"
     }
     params = {
-        "q": q,
-        "type": typeSearch
+        "q": item_name,
+        "type": item_type
     }
     r = requests.get(url, headers=headers,
                      params=params)
@@ -25,14 +26,14 @@ def search(q, typeSearch):
             "artist_name": track["artists"][0]["name"]
         }
         print(dict)
-    return dict
+
 
 
 def request_song_info(song_title, artist_name):
-    base_url = 'https://api.genius.com'
+    url = 'https://api.genius.com'
     headers = {'Authorization': 'Bearer ' +
-               'ccHDzjsPAnwWcOAo2fS5Kb5cH9BFLqsryi5r0a6p3flgb_B3g8qPguO68A3NZTZJ'}
-    search_url = base_url + '/search'
+               api_key.GENIUS_TOKEN}
+    search_url = url + '/search'
     data = {'q': song_title + ' ' + artist_name}
     response = requests.get(search_url, data=data, headers=headers)
     return response
@@ -47,7 +48,7 @@ def scrap_song_url(url):
     return lyrics
 
 
-def readFromConsole():
+def read_from_console():
     input_q = input("provide a name of an item you are searching for:")
     input_type = input("provide a category album/artist/playlist/track:")
     search(input_q, input_type)
@@ -68,7 +69,7 @@ def readFromConsole():
     print(lyrics)
     myDict = {
             "male": ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
-                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks"],
+                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks", "nigga"],
             "female": ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
                         "have", "kids", "he", "her", "children", "because", "so",
                         "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
@@ -79,7 +80,7 @@ def readFromConsole():
         for value in myDict[key]:
             if value in lyrics:
                 key_list.append(key)
-    print(key_list)
+    print(Counter(key_list))
     if key_list.count("male") > key_list.count("female"):
         print("it contains more male shit")
     elif key_list.count("female") > key_list.count("male"):
@@ -88,4 +89,5 @@ def readFromConsole():
         print("it's a draw bruh")
 
 
-readFromConsole()
+if __name__ == "__main__":
+    read_from_console()

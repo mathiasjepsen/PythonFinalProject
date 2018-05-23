@@ -37,7 +37,19 @@ json.dumps()
 
 - serialize object(process of converting abstract datatype to stream of bytes, in this case we serialize to JSON str)to a JSON formatted str using this conversion table.
 
+search(q, typeSearch)
 
+- search function takes query of an item you want to search for and a type of an item you want to search for as parameters. In this case, you are only
+able to search for a track specific items because we need to be able to retrieve track object with items field.
+
+ for hit in json['response']['hits']:
+        if input_artist.lower() in hit['result']['primary_artist']['name'].lower():
+            remote_song_info = hit
+            break
+
+- If everything works fine, you will have now a response object that contains tons of information about all the matches that were found in the API.
+Due to the object shape we got from the request, we will have to iterate over the hits key in that object and look for an exact match using the artist_name variable.
+If we successfully have a match in that object, it means that the song we look for is available in the API and is now available in the remote_song_info variable.
 
 
 
