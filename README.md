@@ -16,7 +16,7 @@
 6. Use the Spotify API to make a POST request with the song titles, hopefully creating a new playlist :P
 ## Specify if the song is given by a male or a female human speciment. 
 ### Steps Required 
-1.Give the song name and artist. 
-2.Find the lyrics using genious api. 
-3.Compare the lyrics with the dictionary containing male/female words to find the "gender" 
-4.Save the song and its "gender" in a dictionary for optimization in case of a future search.
+1. Give the song name and artist. 
+2. Find the lyrics using genius api. 
+3. Compare the lyrics with the dictionary containing male/female words to find the "gender" 
+4. Save the song and its "gender" in a dictionary for optimization in case of a future search.

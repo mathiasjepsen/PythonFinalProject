@@ -36,8 +36,8 @@ def scrape_titles():
         titles.append(title)
         next_button = browser.find_element_by_xpath(
             '//*[@class="ytp-next-button ytp-button"]')
-        browser.execute_script("arguments[0].click();", next_button) 
-        #next_button.click()
+        #browser.execute_script("arguments[0].click();", next_button)
+        next_button.click()
         sleep(2) # If we can find a way to have this be more dynamic, 
                  # and not hard-coded to 2, that'd be nice
 
