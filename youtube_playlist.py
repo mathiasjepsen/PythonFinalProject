@@ -35,15 +35,15 @@ def scrape_titles():
         titles.append(title)
         next_button = browser.find_element_by_xpath(
             '//*[@class="ytp-next-button ytp-button"]')
-        #browser.execute_script("arguments[0].click();", next_button)
-        next_button.click()
+        browser.execute_script("arguments[0].click();", next_button)
+        #next_button.click()
         sleep(2) # If we can find a way to have this be more dynamic, 
                  # and not hard-coded to 2, that'd be nice
 
     return titles
    
 
-def find_spotify_songs(titles_as_URL):
+def find_spotify_songs(titles_as_URL, TOKEN):
     uris = []
     unknown_songs = []
     for url_title in titles_as_URL:
@@ -51,7 +51,7 @@ def find_spotify_songs(titles_as_URL):
 
         headers = {"Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"}
+                "Authorization": f"Bearer {TOKEN}"}
 
         r = requests.get(url, headers=headers)
         results = r.json()
@@ -63,29 +63,42 @@ def find_spotify_songs(titles_as_URL):
                 print(results["error"]["message"])
         except IndexError:
             unknown_songs.append(url_title.replace("%20", " "))
-
     return (uris, unknown_songs)
 
 
 def main():
     print("Please enter the following information in order to continue:")
     playlist_link = input("The link to the playlist: \n> ")
-    spotify_username = input("Spotify username: \n> ")
-    playlist_name = input("Playlist name: \n> ")
-    playlist_description = input("Playlist description: \n> ")
 
     init(playlist_link)
 
     titles = scrape_titles()
     titles_as_URL = [title.replace(" ", "%20") for title in titles]
 
-    uris, unknown_songs = find_spotify_songs(titles_as_URL)
+    is_valid_info = True
+
+    while is_valid_info == True:  
+        spotify_username = input("Spotify username: \n> ")
+        spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
+        try:
+            spotify_api.verify_account_info(spotify_username, spotify_api_token)
+            break
+        except Exception():
+            print("problem")
+        
+
+
+    uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
+
+    playlist_name = input("Playlist name: \n> ")
+    playlist_description = input("Playlist description: \n> ")
 
     playlist_id = spotify_api.create_playlist(spotify_username, 
+                                              spotify_api_token,
                                               playlist_name, 
                                               playlist_description)
     
-    spotify_api.add_to_playlist(uris, playlist_id)
+    spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
 
     print("The following songs couldn't be added to the playlist: ")
     for song in unknown_songs:

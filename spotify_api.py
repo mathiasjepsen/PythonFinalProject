@@ -4,7 +4,23 @@ import api_key
 from bs4 import BeautifulSoup
 
 
-def create_playlist(ID, playlist_name, playlist_description):
+
+def verify_account_info(username, TOKEN):
+    url = f"https://api.spotify.com/v1/users/{username}"
+
+    headers = {"Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {TOKEN}"}
+
+    r = requests.get(url, headers=headers)
+    results = r.json()
+    try:
+        print(results["error"]["message"])
+    except KeyError:
+        print("good")
+
+
+def create_playlist(ID, TOKEN, playlist_name, playlist_description):
     global user_id
     user_id = ID
 
@@ -12,7 +28,7 @@ def create_playlist(ID, playlist_name, playlist_description):
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"
+        "Authorization": f"Bearer {TOKEN}"
     }
 
     body = {
@@ -30,16 +46,16 @@ def create_playlist(ID, playlist_name, playlist_description):
     except KeyError:
         print("Invalid user ID, please input again.")
         user_id = input(">")
-        return create_playlist(user_id, playlist_name, playlist_description)
+        return create_playlist(user_id, TOKEN, playlist_name, playlist_description)
 
 
-def add_to_playlist(uris, playlist_id):
+def add_to_playlist(uris, TOKEN, playlist_id):
     url = f"https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks"
 
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"
+        "Authorization": f"Bearer {TOKEN}"
     }
 
     body = {
@@ -50,18 +66,4 @@ def add_to_playlist(uris, playlist_id):
                        data=json.dumps(body))
 
 
-def get_playlist(playlist_id):
-    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}"
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"
-    }
-    params = {
-        "playlist_id": playlist_id
-    }
-    r = requests.get(url, headers=headers,
-                     params=params)
-    data = r.json()
-    print(data["id"], data["name"])
 
