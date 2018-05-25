@@ -4,16 +4,11 @@ import api_key
 from bs4 import BeautifulSoup
 
 
+class WrongUsernameException(Exception):
+    pass
 
-def verify_account_info(username, TOKEN):
-    url = f"https://api.spotify.com/v1/users/{username}"
-
-    headers = {"Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {TOKEN}"}
-
-    r = requests.get(url, headers=headers)
-    return r.json()
+class InvalidTokenException(Exception):
+    pass
 
 
 def create_playlist(ID, TOKEN, playlist_name, playlist_description):
@@ -38,11 +33,14 @@ def create_playlist(ID, TOKEN, playlist_name, playlist_description):
     results = r.json()
 
     try:
-        return results["id"]
+        status = results["error"]["status"]
+        if status == 403:
+            raise  WrongUsernameException({"message":"the provided username does not match Token or is incorrect"})
+        elif status == 401:
+            raise  InvalidTokenException({"message":"the TOKEN provided does not include necessary rights or is invalid"})
     except KeyError:
-        print("Invalid user ID, please input again.")
-        user_id = input(">")
-        return create_playlist(user_id, TOKEN, playlist_name, playlist_description)
+        return results["id"]
+        
 
 
 def add_to_playlist(uris, TOKEN, playlist_id):

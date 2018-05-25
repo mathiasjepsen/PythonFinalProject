@@ -79,27 +79,33 @@ def main():
     titles = scrape_titles()
     titles_as_URL = [title.replace(" ", "%20") for title in titles]
 
-    while True:  
-        spotify_username = input("Spotify username: \n> ")
-        spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
-        try:
-            results = spotify_api.verify_account_info(spotify_username, spotify_api_token)
-            if results["id"] == spotify_username:
-                break
-        except KeyError:
-            print("Either of the inputted information could be wrong, \n" +
-                  "please enter the username and token again.")
-        
-    uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
+    spotify_username = input("Spotify username: \n> ")
+    spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
 
     playlist_name = input("Playlist name: \n> ")
     playlist_description = input("Playlist description: \n> ")
-
-    playlist_id = spotify_api.create_playlist(spotify_username, 
+    
+    valid_id = True
+    while valid_id == True:
+        try:
+            playlist_id = spotify_api.create_playlist(spotify_username, 
                                               spotify_api_token,
                                               playlist_name, 
                                               playlist_description)
-    
+            break
+        except WrongUsernameException as e:
+            details = e.args[0]
+            print(details["message"])
+            spotify_username = input("Spotify username: \n> ")
+        except InvalidTokenException as e:
+            details = e.args[0]
+            print(details["message"])
+            spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
+
+            
+    uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
+
+
     spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
 
     if len(unknown_songs) > 0:
