@@ -7,7 +7,7 @@ import json
 import api_key
 import spotify_api
 import bs4
-
+import custom_exceptions
 
 def init(playlist_link):
     global num_of_videos
@@ -93,11 +93,11 @@ def main():
                                               playlist_name, 
                                               playlist_description)
             break
-        except WrongUsernameException as e:
+        except custom_exceptions.WrongUsernameException as e:
             details = e.args[0]
             print(details["message"])
             spotify_username = input("Spotify username: \n> ")
-        except InvalidTokenException as e:
+        except custom_exceptions.InvalidTokenException as e:
             details = e.args[0]
             print(details["message"])
             spotify_api_token = input("Spotify api authentification TOKEN: \n> ")

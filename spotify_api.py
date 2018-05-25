@@ -1,14 +1,8 @@
 import requests
 import json
 import api_key
+import custom_exceptions
 from bs4 import BeautifulSoup
-
-
-class WrongUsernameException(Exception):
-    pass
-
-class InvalidTokenException(Exception):
-    pass
 
 
 def create_playlist(ID, TOKEN, playlist_name, playlist_description):
@@ -35,9 +29,9 @@ def create_playlist(ID, TOKEN, playlist_name, playlist_description):
     try:
         status = results["error"]["status"]
         if status == 403:
-            raise  WrongUsernameException({"message":"the provided username does not match Token or is incorrect"})
+            raise  custom_exceptions.WrongUsernameException({"message":"the provided username does not match Token or is incorrect"})
         elif status == 401:
-            raise  InvalidTokenException({"message":"the TOKEN provided does not include necessary rights or is invalid"})
+            raise  custom_exceptions.InvalidTokenException({"message":"the TOKEN provided does not include necessary rights or is invalid"})
     except KeyError:
         return results["id"]
         
