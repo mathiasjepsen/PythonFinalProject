@@ -70,24 +70,26 @@ def main():
     print("Please enter the following information in order to continue:")
     playlist_link = input("The link to the playlist: \n> ")
 
+    while "/playlist?list=" not in playlist_link:
+        print("Please enter a valid playlist URL.")
+        playlist_link = input("The link to the playlist: \n> ")
+
     init(playlist_link)
 
     titles = scrape_titles()
     titles_as_URL = [title.replace(" ", "%20") for title in titles]
 
-    is_valid_info = True
-
-    while is_valid_info == True:  
+    while True:  
         spotify_username = input("Spotify username: \n> ")
         spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
         try:
-            spotify_api.verify_account_info(spotify_username, spotify_api_token)
-            break
-        except Exception():
-            print("problem")
+            results = spotify_api.verify_account_info(spotify_username, spotify_api_token)
+            if results["id"] == spotify_username:
+                break
+        except KeyError:
+            print("Either of the inputted information could be wrong, \n" +
+                  "please enter the username and token again.")
         
-
-
     uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
 
     playlist_name = input("Playlist name: \n> ")
@@ -100,9 +102,10 @@ def main():
     
     spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
 
-    print("The following songs couldn't be added to the playlist: ")
-    for song in unknown_songs:
-        print(song)
+    if len(unknown_songs) > 0:
+        print("The following songs couldn't be added to the playlist: ")
+        for song in unknown_songs:
+            print(song)
 
 if __name__ == "__main__":
     main()

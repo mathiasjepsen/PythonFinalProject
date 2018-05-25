@@ -13,11 +13,7 @@ def verify_account_info(username, TOKEN):
                 "Authorization": f"Bearer {TOKEN}"}
 
     r = requests.get(url, headers=headers)
-    results = r.json()
-    try:
-        print(results["error"]["message"])
-    except KeyError:
-        print("good")
+    return r.json()
 
 
 def create_playlist(ID, TOKEN, playlist_name, playlist_description):
