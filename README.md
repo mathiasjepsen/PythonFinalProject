@@ -55,7 +55,7 @@ Now (if you have successfully completed the previous parts) the fun begins. In y
 
 You will be asked to provide information:
 
-1- You will be asked to provide the link to the youtube playlist: mind you need to provide link to the "playlist homepage": like the following [example](https://www.youtube.com/playlist?list=PLDzVECoc2lpTFnCQTzTK8RIRnuFW-fFbu)
+1- You will be asked to provide the link to the youtube playlist: mind you need to provide link to the "playlist homepage" (URL must start with "https://www.youtube.com/playlist): like the following [example](https://www.youtube.com/playlist?list=PLDzVECoc2lpTFnCQTzTK8RIRnuFW-fFbu)
 
 2- You will then be asked to provide your Spotify username, provide the username of the account you used to retrieve your authentification Token
 
@@ -63,4 +63,4 @@ You will be asked to provide information:
 
 4- Provide the description of the playlist you want to create (optional) 
 
-You will see that a Browser page will open, do not touch it, it will be closed when we have retrieved all the necessary information.
+You will see that a Browser page will open, do not touch it, it will be closed when we have retrieved all the necessary information. You will also see a progress bar regarding the "scrapping" of the youtube playlist. Remember, that your authentification Token needs to be valid during the entire process. 
