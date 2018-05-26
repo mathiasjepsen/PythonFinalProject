@@ -80,7 +80,7 @@ def main():
     titles_as_URL = [title.replace(" ", "%20") for title in titles]
 
     spotify_username = input("Spotify username: \n> ")
-    spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
+    spotify_api_token = input("Spotify authentification token: \n> ")
 
     playlist_name = input("Playlist name: \n> ")
     playlist_description = input("Playlist description: \n> ")
@@ -97,14 +97,14 @@ def main():
             spotify_username = input("Spotify username: \n> ")
         except custom_exceptions.InvalidTokenException as e:
             print(e.args[0]["message"])
-            spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
+            spotify_api_token = input("Spotify authentification token: \n> ")
 
     uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
 
     spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
 
     if len(unknown_songs) > 0:
-        print("The following songs couldn't be added to the playlist: ")
+        print("The following songs couldn't be added to the playlist:")
         for song in unknown_songs:
             print(song)
 

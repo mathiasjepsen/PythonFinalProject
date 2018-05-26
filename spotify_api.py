@@ -9,7 +9,8 @@ def create_playlist(ID, TOKEN, playlist_name, playlist_description):
     global user_id
     user_id = ID
 
-    url_create_playlist = f"https://api.spotify.com/v1/users/{user_id}/playlists"
+    url_create_playlist = f"https://api.spotify.com/v1/users/" +
+                           "{user_id}/playlists"
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -27,18 +28,21 @@ def create_playlist(ID, TOKEN, playlist_name, playlist_description):
     results = r.json()
 
     try:
-        status = results["error"]["status"]
-        if status == 403:
-            raise  custom_exceptions.WrongUsernameException({"message":"The provided username does not match the provided token or is incorrect."})
-        elif status == 401:
-            raise  custom_exceptions.InvalidTokenException({"message":"The token provided does not include the necessary rights or is invalid."})
-    except KeyError:
         return results["id"]
-        
+    except KeyError:
+        if results["error"]["status"] == 403:
+            raise  custom_exceptions.WrongUsernameException(
+                {"message":"The provided username does not match" +
+                 "the provided token or is incorrect."})
+        elif results["error"]["status"] == 401:
+            raise  custom_exceptions.InvalidTokenException(
+                {"message":"The token provided does not include" +
+                 "the necessary rights or is invalid."})
 
 
 def add_to_playlist(uris, TOKEN, playlist_id):
-    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks"
+    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/" +
+           "{playlist_id}/tracks"
 
     headers = {
         "Accept": "application/json",
