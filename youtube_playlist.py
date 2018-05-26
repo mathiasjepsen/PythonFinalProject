@@ -85,26 +85,21 @@ def main():
     playlist_name = input("Playlist name: \n> ")
     playlist_description = input("Playlist description: \n> ")
     
-    valid_id = True
-    while valid_id == True:
+    while True:
         try:
             playlist_id = spotify_api.create_playlist(spotify_username, 
-                                              spotify_api_token,
-                                              playlist_name, 
-                                              playlist_description)
+                                                      spotify_api_token,
+                                                      playlist_name, 
+                                                      playlist_description)
             break
         except custom_exceptions.WrongUsernameException as e:
-            details = e.args[0]
-            print(details["message"])
+            print(e.args[0]["message"])
             spotify_username = input("Spotify username: \n> ")
         except custom_exceptions.InvalidTokenException as e:
-            details = e.args[0]
-            print(details["message"])
+            print(e.args[0]["message"])
             spotify_api_token = input("Spotify api authentification TOKEN: \n> ")
 
-            
     uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
-
 
     spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
 
