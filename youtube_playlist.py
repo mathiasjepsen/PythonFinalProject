@@ -39,7 +39,7 @@ def scrape_titles():
         #next_button.click()
         sleep(2) # If we can find a way to have this be more dynamic, 
                  # and not hard-coded to 2, that'd be nice
-
+    browser.close()
     return titles
    
 
