@@ -41,29 +41,6 @@ def scrape_titles():
                  # and not hard-coded to 2, that'd be nice
 
     return titles
-   
-
-def find_spotify_songs(titles_as_URL, TOKEN):
-    uris = []
-    unknown_songs = []
-    for url_title in titles_as_URL:
-        url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
-
-        headers = {"Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {TOKEN}"}
-
-        r = requests.get(url, headers=headers)
-        results = r.json()
-
-        try:
-            uris.append(results["tracks"]["items"][0]["uri"])
-        except KeyError:
-            if results["error"]:
-                print(results["error"]["message"])
-        except IndexError:
-            unknown_songs.append(url_title.replace("%20", " "))
-    return (uris, unknown_songs)
 
 
 def main():
@@ -99,7 +76,7 @@ def main():
             print(e.args[0]["message"])
             spotify_api_token = input("Spotify authentification token: \n> ")
 
-    uris, unknown_songs = find_spotify_songs(titles_as_URL, spotify_api_token)
+    uris, unknown_songs = spotify_api.find_spotify_songs(titles_as_URL, spotify_api_token)
 
     spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
 
@@ -107,6 +84,7 @@ def main():
         print("The following songs couldn't be added to the playlist:")
         for song in unknown_songs:
             print(song)
+
 
 if __name__ == "__main__":
     main()

@@ -2,20 +2,19 @@ import requests
 import json
 import api_key
 import custom_exceptions
-from bs4 import BeautifulSoup
 
 
-def create_playlist(ID, TOKEN, playlist_name, playlist_description):
+def create_playlist(ID, token, playlist_name, playlist_description):
     global user_id
     user_id = ID
 
     url_create_playlist = "https://api.spotify.com/v1/users/" + \
                           f"{user_id}/playlists"
-    print(url_create_playlist)
+
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {TOKEN}"
+        "Authorization": f"Bearer {token}"
     }
 
     body = {
@@ -39,6 +38,31 @@ def create_playlist(ID, TOKEN, playlist_name, playlist_description):
             raise  custom_exceptions.InvalidTokenException(
                 {"message":"The token provided does not include " + \
                  "the necessary rights or is invalid."})
+
+
+def find_spotify_songs(titles_as_URL, token):
+    uris = []
+    unknown_songs = []
+    for url_title in titles_as_URL:
+        url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}"
+        }
+
+        r = requests.get(url, headers=headers)
+        results = r.json()
+
+        try:
+            uris.append(results["tracks"]["items"][0]["uri"])
+        except KeyError:
+            if results["error"]:
+                print(results["error"]["message"])
+        except IndexError:
+            unknown_songs.append(url_title.replace("%20", " "))
+    return (uris, unknown_songs)
 
 
 def add_to_playlist(uris, TOKEN, playlist_id):
