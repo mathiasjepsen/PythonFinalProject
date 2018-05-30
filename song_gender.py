@@ -17,20 +17,11 @@ def search(item_name, item_type, token):
         "type": item_type
     }
     r = requests.get(url, headers=headers,
-                          params=params)
+                     params=params)
     data = r.json()
     tracks = data["tracks"]["items"]
-<<<<<<< HEAD
     return [(track["name"], track["artists"][0]["name"]) for track in tracks]
 
-=======
-    for track in tracks:
-        track_info = {
-            "song_title": track["name"],
-            "artist_name": track["artists"][0]["name"]
-        }
-    return track_info
->>>>>>> f82bbde2d69f98f07e8cb4e72a25fdd5fe5e6992
 
 def request_song_info(song_title, artist_name):
     url = 'https://api.genius.com'
@@ -54,14 +45,10 @@ def read_from_console():
     input_type = input("provide a category album/artist/playlist/track: \n> ")
     token = input("Spotify authentification token: \n> ")
     tracks_info = search(input_q, input_type, token)
-<<<<<<< HEAD
 
     for song, artist in tracks_info:
         print(f"{song}  -  {artist}")
 
-=======
-    print(tracks_info)
->>>>>>> f82bbde2d69f98f07e8cb4e72a25fdd5fe5e6992
     input_artist = input("Choose an artist:")
     response = request_song_info(input_q, input_artist)
     json = response.json()
@@ -77,23 +64,27 @@ def read_from_console():
         song_url = remote_song_info['result']['url']
         lyrics = scrap_song_url(song_url)
 
-    myDict = {
-            "male": ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
-                        "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks"],
-            "female": ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
-                        "have", "kids", "he", "her", "children", "because", "so",
-                        "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
-    }
+    male_word_list = ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
+                       "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks", "nigga"]
+    female_word_list = ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
+                         "have", "kids", "he", "her", "children", "because", "so",
+                         "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
 
-    key_list = []
-    for key in myDict.keys():
-        for value in myDict[key]:
-            if value in lyrics:
-                key_list.append(key)
+    male_word_count = {}
+    female_word_count = {}
 
-    if key_list.count("male") > key_list.count("female"):
+    for word in lyrics.split():
+        if word in male_word_list:
+            male_word_count.setdefault(word, 0)
+            male_word_count[word] += 1
+        elif word in female_word_list:
+            female_word_count.setdefault(word, 0)
+            female_word_count[word] += 1
+    print(male_word_count)
+    print(female_word_count)
+    if sum(male_word_count.values()) > sum(female_word_count.values()):
         print("Seems like this song favours male specific words")
-    elif key_list.count("female") > key_list.count("male"):
+    elif sum(male_word_count.values()) < sum(female_word_count.values()):
         print("Seems like this songs favour female specific words")
     else:
         print("Well well well, it's a draw")
