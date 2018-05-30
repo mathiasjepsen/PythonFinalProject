@@ -1,5 +1,7 @@
 import requests
 import json
+import api_key
+from bs4 import BeautifulSoup
 from collections import Counter
 
 
@@ -18,11 +20,7 @@ def search(item_name, item_type, token):
                           params=params)
     data = r.json()
     tracks = data["tracks"]["items"]
-    for track in tracks:
-        track_info = {
-            "song_title": track["name"],
-            "artist_name": track["artists"][0]["name"]
-        }
+    return [(track["name"], track["artists"][0]["name"]) for track in tracks]
 
 
 def request_song_info(song_title, artist_name):
@@ -46,7 +44,11 @@ def read_from_console():
     input_q = input("provide a name of an item you are searching for: \n> ")
     input_type = input("provide a category album/artist/playlist/track: \n> ")
     token = input("Spotify authentification token: \n> ")
-    search(input_q, input_type, token)
+    tracks_info = search(input_q, input_type, token)
+
+    for song, artist in tracks_info:
+        print(f"{song}  -  {artist}")
+
     input_artist = input("Choose an artist:")
     response = request_song_info(input_q, input_artist)
     json = response.json()
@@ -68,7 +70,7 @@ def read_from_console():
             "female": ["mhm", "husband", "and", "my", "oh", "she", "we", "um",
                         "have", "kids", "he", "her", "children", "because", "so",
                         "yes", "daughter", "gosh", "goodness", "son", "home", "too", "wow", "uh-huh"]
-        }
+    }
 
     key_list = []
     for key in myDict.keys():
