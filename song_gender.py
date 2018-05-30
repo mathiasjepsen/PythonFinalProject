@@ -83,7 +83,7 @@ def read_from_console():
         print("Seems like this songs favour female specific words")
     else:
         print("Well well well, it's a draw")
-
+    print ("Number of male words: ", key_list.count("male"), "Number of female words: ", key_list.count("female"))
 
 if __name__ == "__main__":
     read_from_console()
