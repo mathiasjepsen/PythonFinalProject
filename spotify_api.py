@@ -10,18 +10,15 @@ def create_playlist(ID, token, playlist_name, playlist_description):
 
     url_create_playlist = "https://api.spotify.com/v1/users/" + \
                           f"{user_id}/playlists"
-
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
     }
-
     body = {
         "name": playlist_name,
         "description": playlist_description
     }
-
     r = requests.post(url_create_playlist, 
                       headers=headers,
                       data=json.dumps(body))
@@ -45,13 +42,11 @@ def find_spotify_songs(titles_as_URL, token):
     unknown_songs = []
     for url_title in titles_as_URL:
         url = f"https://api.spotify.com/v1/search?q={url_title}&type=track"
-
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": f"Bearer {token}"
         }
-
         r = requests.get(url, headers=headers)
         results = r.json()
 
@@ -68,19 +63,13 @@ def find_spotify_songs(titles_as_URL, token):
 def add_to_playlist(uris, TOKEN, playlist_id):
     url = f"https://api.spotify.com/v1/users/{user_id}/playlists/" + \
           f"{playlist_id}/tracks"
-
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
         "Authorization": f"Bearer {TOKEN}"
     }
-
     body = {
         "uris": uris
     }
-
     requests.post(url, headers=headers,
                        data=json.dumps(body))
-
-
-

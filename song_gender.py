@@ -1,23 +1,21 @@
 import requests
 import json
-import api_key
-from bs4 import BeautifulSoup
 from collections import Counter
 
 
-def search(item_name, item_type):
+def search(item_name, item_type, token):
     url = f"https://api.spotify.com/v1/search"
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key.SPOTIFY_TOKEN}"
+        "Authorization": f"Bearer {token}"
     }
     params = {
         "q": item_name,
         "type": item_type
     }
     r = requests.get(url, headers=headers,
-                     params=params)
+                          params=params)
     data = r.json()
     tracks = data["tracks"]["items"]
     for track in tracks:
@@ -25,8 +23,6 @@ def search(item_name, item_type):
             "song_title": track["name"],
             "artist_name": track["artists"][0]["name"]
         }
-        print(track_info)
-
 
 
 def request_song_info(song_title, artist_name):
@@ -43,14 +39,14 @@ def scrap_song_url(url):
     page = requests.get(url)
     html = BeautifulSoup(page.text, 'html.parser')
     lyrics = html.find('div', class_='lyrics').get_text()
-
     return lyrics
 
 
 def read_from_console():
-    input_q = input("provide a name of an item you are searching for:")
-    input_type = input("provide a category album/artist/playlist/track:")
-    search(input_q, input_type)
+    input_q = input("provide a name of an item you are searching for: \n> ")
+    input_type = input("provide a category album/artist/playlist/track: \n> ")
+    token = input("Spotify authentification token: \n> ")
+    search(input_q, input_type, token)
     input_artist = input("Choose an artist:")
     response = request_song_info(input_q, input_artist)
     json = response.json()
@@ -60,12 +56,12 @@ def read_from_console():
         if input_artist.lower() in hit['result']['primary_artist']['name'].lower():
             remote_song_info = hit
             break
+
     # Extract lyrics from URL if the song was found
     if remote_song_info:
         song_url = remote_song_info['result']['url']
         lyrics = scrap_song_url(song_url)
 
-    print(lyrics)
     myDict = {
             "male": ["uh", "ah", "yeah", "mean", "you", "wife", "noise", "man", "hey", "pretty", "the",
                         "a", "of", "shit", "sort", "cool", "i", "like", "what", "guy", "there", "bucks"],
@@ -79,7 +75,7 @@ def read_from_console():
         for value in myDict[key]:
             if value in lyrics:
                 key_list.append(key)
-    print(Counter(key_list))
+
     if key_list.count("male") > key_list.count("female"):
         print("Seems like this song favours male specific words")
     elif key_list.count("female") > key_list.count("male"):

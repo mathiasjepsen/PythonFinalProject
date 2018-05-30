@@ -6,8 +6,8 @@ import requests
 import json
 import api_key
 import spotify_api
-import bs4
 import custom_exceptions
+
 
 def init(playlist_link):
     global num_of_videos
