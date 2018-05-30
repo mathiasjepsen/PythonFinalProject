@@ -1,5 +1,7 @@
 import requests
 import json
+import api_key
+from bs4 import BeautifulSoup
 from collections import Counter
 
 
@@ -23,7 +25,7 @@ def search(item_name, item_type, token):
             "song_title": track["name"],
             "artist_name": track["artists"][0]["name"]
         }
-
+    return track_info
 
 def request_song_info(song_title, artist_name):
     url = 'https://api.genius.com'
@@ -46,7 +48,8 @@ def read_from_console():
     input_q = input("provide a name of an item you are searching for: \n> ")
     input_type = input("provide a category album/artist/playlist/track: \n> ")
     token = input("Spotify authentification token: \n> ")
-    search(input_q, input_type, token)
+    tracks_info = search(input_q, input_type, token)
+    print(tracks_info)
     input_artist = input("Choose an artist:")
     response = request_song_info(input_q, input_artist)
     json = response.json()
