@@ -20,8 +20,17 @@ def search(item_name, item_type, token):
                           params=params)
     data = r.json()
     tracks = data["tracks"]["items"]
+<<<<<<< HEAD
     return [(track["name"], track["artists"][0]["name"]) for track in tracks]
 
+=======
+    for track in tracks:
+        track_info = {
+            "song_title": track["name"],
+            "artist_name": track["artists"][0]["name"]
+        }
+    return track_info
+>>>>>>> f82bbde2d69f98f07e8cb4e72a25fdd5fe5e6992
 
 def request_song_info(song_title, artist_name):
     url = 'https://api.genius.com'
@@ -45,10 +54,14 @@ def read_from_console():
     input_type = input("provide a category album/artist/playlist/track: \n> ")
     token = input("Spotify authentification token: \n> ")
     tracks_info = search(input_q, input_type, token)
+<<<<<<< HEAD
 
     for song, artist in tracks_info:
         print(f"{song}  -  {artist}")
 
+=======
+    print(tracks_info)
+>>>>>>> f82bbde2d69f98f07e8cb4e72a25fdd5fe5e6992
     input_artist = input("Choose an artist:")
     response = request_song_info(input_q, input_artist)
     json = response.json()
