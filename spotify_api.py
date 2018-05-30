@@ -34,7 +34,7 @@ def create_playlist(ID, token, playlist_name, playlist_description):
         elif results["error"]["status"] == 401:
             raise  custom_exceptions.InvalidTokenException(
                 {"message":"The token provided does not include " + \
-                 "the necessary rights or is invalid."})
+                 "the necessary rights or is invalid (could have expired)."})
 
 
 def find_spotify_songs(titles_as_URL, token):
