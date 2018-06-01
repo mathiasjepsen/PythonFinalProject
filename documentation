@@ -59,14 +59,6 @@ request_song_info()
  
 - This method receives the song and artist name we extracted from the user input and sends a request to the Genius API
 
-  key_list = []
-    for key in myDict.keys():
-        for value in myDict[key]:
-            if value in lyrics:
-                key_list.append(key)
-
-- here we iterate over the keys in myDict, for every occurance of the value in lyrics, we append it to our key_list(which is a list obviously)
-
 return [(track["name"], track["artists"][0]["name"]) for track in tracks]
 
 - return a list comprenhension which consists of a track name and an artist name of each track provided by the search() function
