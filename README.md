@@ -67,4 +67,35 @@ You will see that a Browser page will open, do not touch it, it will be closed w
 
 **Once these operations are terminated, you will be notified of the songs that could not be found in the Spotify library. The songs that were found on Spotify are now part of the newly created playlist.**
 
+### Song "Gender" Identification
+
+### Imports
+
+The source code is in Python and requires several modules. Please make sure you have installed the following:
+```
+requests
+
+json
+
+api_key
+
+BeautifulSoup
+
+Counter
+
+### Running the code
+
+1. You will need to input the item you are searching for
+
+2. You will be asked to input the type of item you are searching for (album/artist/playlist/track)
+
+3. You will need to provide your spotify authentification token as explained here
+
+4. You will be given a list with artists to choose from
+
+5. Accordning to the lyrics the programm will find out if the song is "male" or "female"
+
+
+
+
 
