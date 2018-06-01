@@ -93,7 +93,7 @@ Counter
 
 2. You will be asked to input the type of item you are searching for (album/artist/playlist/track)
 
-3. You will need to provide your spotify authentification token as explained here
+3. You will need to provide your spotify authentification token as explained in [Personal Information]
 
 4. You will be given a list with artists to choose from
 
