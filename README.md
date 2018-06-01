@@ -76,7 +76,7 @@ You will see that a Browser page will open, do not touch it, it will be closed w
 ### Imports
 
 The source code is in Python and requires several modules. Please make sure you have installed the following:
-```
+
 requests
 
 json
