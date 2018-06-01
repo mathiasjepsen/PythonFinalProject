@@ -43,7 +43,7 @@ def scrape_titles():
 
 
 def main():
-    print("Please enter the following information in order to continue:")
+    print("\nPlease enter the following information in order to continue:")
     playlist_link = input("The link to the playlist: \n> ")
 
     while "/playlist?list=" not in playlist_link:
