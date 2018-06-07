@@ -16,9 +16,10 @@ browser.implicitly_wait(3)
 
 play_all_button = browser.find_element_by_xpath('//*[@class="style-scope ytd-playlist-sidebar-primary-info-renderer"]')
 
-- find_element_by_xpath is a method which allows us to navigate through elements and attributes in an XML document. 
+-  is a method which allows us to navigate through elements and attributes in an XML document. 
 - typically used when you don't have suitable id or name attribute for the element you wish to locate
-- // in the xpath stand for selecting the current node whereas * stands for any tagname
+- // in the xpath stand for selecting the current node whereas * find_element_by_xpathstands for any tagname
+- we tried to use find_element_by_classname but because class contains whitespace so we had to opt in for find_element_by_xpath
 
 sleep()
 
@@ -62,3 +63,11 @@ request_song_info()
 return [(track["name"], track["artists"][0]["name"]) for track in tracks]
 
 - return a list comprenhension which consists of a track name and an artist name of each track provided by the search() function
+
+if __name__ == "__main__":
+
+- python interpeter reads a source file, it executes all of the code found in it
+- we use it to be able to import our project somewhere else
+
+browser, num_of_videos = init(playlist_link)
+-pattern matching
