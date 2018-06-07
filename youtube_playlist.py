@@ -9,8 +9,6 @@ import custom_exceptions
 
 
 def init(playlist_link):
-    global num_of_videos
-    global browser
     browser = webdriver.Chrome()
     browser.get(playlist_link)
 
@@ -23,21 +21,23 @@ def init(playlist_link):
     mute_button = browser.find_element_by_xpath(
         '//*[@class="ytp-mute-button ytp-button"]')
     mute_button.click()
+    return browser, num_of_videos
 
 
-def scrape_titles():
+def scrape_titles(browser, num_of_videos):
     titles = []
-    for _ in tqdm(range(int(num_of_videos))):
+    for _ in tqdm(range(int(num_of_videos))): #num_of_videos is a string scrapped from page
         title = browser.find_element_by_xpath(
             '//*[@class="style-scope ytd-video-primary-info-renderer"]') \
             .text.splitlines()[0]        
         titles.append(title)
         next_button = browser.find_element_by_xpath(
             '//*[@class="ytp-next-button ytp-button"]')
-        browser.execute_script("arguments[0].click();", next_button)
-        #next_button.click()
-        sleep(2) # If we can find a way to have this be more dynamic, 
-                 # and not hard-coded to 2, that'd be nice
+        browser.execute_script("arguments[0].click();", next_button) #execute a script, work even if an add, because it is in the DOM, javascript can access the DOM
+                                                                    #the first parameter is the javascript script, the following
+                                                                    #ones are arguments[], so our next_button is arguments[0], and our javascript is .click() on it
+        #next_button.click() this simulate a click of the button, but if there is an add it doesn't work, the button is in the DOM but is hidden to the user at that time
+        sleep(2) 
     browser.close()
     return titles
 
@@ -50,9 +50,9 @@ def main():
         print("Please enter a valid playlist URL.")
         playlist_link = input("The link to the playlist: \n> ")
 
-    init(playlist_link)
+    browser, num_of_videos = init(playlist_link)
 
-    titles = scrape_titles()
+    titles = scrape_titles(browser, num_of_videos)
     titles_as_URL = [title.replace(" ", "%20") for title in titles]
 
     spotify_username = input("Spotify username: \n> ")
@@ -77,7 +77,7 @@ def main():
 
     uris, unknown_songs = spotify_api.find_spotify_songs(titles_as_URL, spotify_api_token)
 
-    spotify_api.add_to_playlist(uris, spotify_api_token, playlist_id)
+    spotify_api.add_to_playlist(spotify_username, uris, spotify_api_token, playlist_id)
 
     if len(unknown_songs) > 0:
         print("The following songs couldn't be added to the playlist:")

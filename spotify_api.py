@@ -4,10 +4,7 @@ import api_key
 import custom_exceptions
 
 
-def create_playlist(ID, token, playlist_name, playlist_description):
-    global user_id
-    user_id = ID
-
+def create_playlist(user_id, token, playlist_name, playlist_description):
     url_create_playlist = "https://api.spotify.com/v1/users/" + \
                           f"{user_id}/playlists"
     headers = {
@@ -22,8 +19,9 @@ def create_playlist(ID, token, playlist_name, playlist_description):
     r = requests.post(url_create_playlist, 
                       headers=headers,
                       data=json.dumps(body))
+    # r is a response object                  
     results = r.json()
-
+    #results is a dictionary
     try:
         return results["id"]
     except KeyError:
@@ -54,19 +52,19 @@ def find_spotify_songs(titles_as_URL, token):
             uris.append(results["tracks"]["items"][0]["uri"])
         except KeyError:
             if results["error"]:
-                print(results["error"]["message"])
+                print(results["error"]["message"]) # request crashed, can be because of token invalid
         except IndexError:
-            unknown_songs.append(url_title.replace("%20", " "))
-    return (uris, unknown_songs)
+            unknown_songs.append(url_title.replace("%20", " ")) #song wasn't found
+    return uris, unknown_songs
 
 
-def add_to_playlist(uris, TOKEN, playlist_id):
-    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/" + \
-          f"{playlist_id}/tracks"
+def add_to_playlist(user_id, uris, token, playlist_id):
+    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/" + \ 
+          f"{playlist_id}/tracks"                                   #\ means it continues on the line below                                 
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {TOKEN}"
+        "Authorization": f"Bearer {token}"
     }
     body = {
         "uris": uris
