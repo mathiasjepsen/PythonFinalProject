@@ -59,7 +59,7 @@ def find_spotify_songs(titles_as_URL, token):
 
 
 def add_to_playlist(user_id, uris, token, playlist_id):
-    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/" + \ 
+    url = f"https://api.spotify.com/v1/users/{user_id}/playlists/" + \
           f"{playlist_id}/tracks"                                   #\ means it continues on the line below                                 
     headers = {
         "Accept": "application/json",
